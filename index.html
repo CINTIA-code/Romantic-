@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Coração Animado 💗</title>
+<title>Coração 💗 Iris</title>
 
 <style>
 body {
@@ -10,49 +10,56 @@ body {
     background: black;
     overflow: hidden;
     font-family: monospace;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    flex-direction: column;
-}
-
-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
 }
 
 button {
-    position: relative;
+    position: absolute;
     z-index: 2;
-    padding: 12px 25px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px 30px;
     font-size: 16px;
     background: pink;
     border: none;
     border-radius: 20px;
     cursor: pointer;
 }
+
+canvas {
+    display: block;
+}
+
+iframe {
+    display: none; /* deixa invisível */
+}
 </style>
 </head>
 <body>
 
-<button onclick="startLove()">Clique para sentir 💗</button>
+<button onclick="startLove()">Clique 💗</button>
 
 <canvas id="canvas"></canvas>
 
-<audio id="music" loop>
-    <!-- Troque pelo nome da sua música -->
-    <source src="musica.mp3" type="audio/mpeg">
-</audio>
+<!-- Vídeo oficial Iris -->
+<iframe 
+id="ytplayer"
+width="0" 
+height="0"
+src=""
+frameborder="0"
+allow="autoplay; encrypted-media"
+allowfullscreen>
+</iframe>
 
 <script>
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
+
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-ctx.fillStyle = "pink";
+ctx.fillStyle = "#ff69b4";
 ctx.font = "14px monospace";
 
 let t = 0;
@@ -81,7 +88,6 @@ function draw() {
         ctx.fillText("I love you", x, y);
     }
 
-    // efeito pulsar
     if (growing) {
         scale += 0.1;
         if (scale > 22) growing = false;
@@ -96,7 +102,11 @@ function draw() {
 
 function startLove() {
     document.querySelector("button").style.display = "none";
-    document.getElementById("music").play();
+
+    // Ativa o vídeo oficial Iris
+    document.getElementById("ytplayer").src =
+    "https://www.youtube.com/embed/NdYWuo9OFAw?autoplay=1&loop=1&playlist=NdYWuo9OFAw";
+
     draw();
 }
 </script>
