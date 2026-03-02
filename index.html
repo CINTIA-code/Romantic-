@@ -1,120 +1,86 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>Coração 💗 Iris</title>
-
+<title>Iris 💗</title>
 <style>
-body {
-    margin: 0;
-    background: black;
-    overflow: hidden;
-    font-family: monospace;
+body{
+margin:0;
+background:black;
+overflow:hidden;
+font-family:monospace;
 }
-
-button {
-    position: absolute;
-    z-index: 2;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 15px 30px;
-    font-size: 16px;
-    background: pink;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
+button{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+padding:15px 25px;
+background:pink;
+border:none;
+border-radius:20px;
 }
-
-canvas {
-    display: block;
+canvas{
+display:block;
 }
-
-/* vídeo pequeno no canto */
-.video-container {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    width: 150px;
-    height: 84px;
-    display: none;
+.video{
+position:fixed;
+bottom:10px;
+right:10px;
+display:none;
 }
 </style>
 </head>
 <body>
 
 <button onclick="startLove()">Clique 💗</button>
+<canvas id="c"></canvas>
 
-<canvas id="canvas"></canvas>
-
-<div class="video-container" id="videoBox">
-<iframe 
-width="150" 
-height="84"
+<div class="video" id="video">
+<iframe width="200" height="120"
 src=""
 frameborder="0"
-allow="autoplay; encrypted-media"
-allowfullscreen>
-</iframe>
+allow="autoplay"
+allowfullscreen></iframe>
 </div>
 
 <script>
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+let canvas=document.getElementById("c");
+let ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+let t=0,scale=18,grow=true;
 
-ctx.fillStyle = "#ff69b4";
-ctx.font = "14px monospace";
-
-let t = 0;
-let scale = 18;
-let growing = true;
-
-function heart(t) {
-    let x = 16 * Math.pow(Math.sin(t), 3);
-    let y = 13 * Math.cos(t)
-          - 5 * Math.cos(2 * t)
-          - 2 * Math.cos(3 * t)
-          - Math.cos(4 * t);
-    return { x, y };
+function heart(a){
+return{
+x:16*Math.pow(Math.sin(a),3),
+y:13*Math.cos(a)-5*Math.cos(2*a)-2*Math.cos(3*a)-Math.cos(4*a)
+}
 }
 
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    for (let i = 0; i < 200; i++) {
-        let angle = i * 0.1 + t;
-        let pos = heart(angle);
-
-        let x = canvas.width/2 + pos.x * scale;
-        let y = canvas.height/2 - pos.y * scale;
-
-        ctx.fillText("I love you", x, y);
-    }
-
-    if (growing) {
-        scale += 0.1;
-        if (scale > 22) growing = false;
-    } else {
-        scale -= 0.1;
-        if (scale < 18) growing = true;
-    }
-
-    t += 0.02;
-    requestAnimationFrame(draw);
+function draw(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+for(let i=0;i<200;i++){
+let ang=i*0.1+t;
+let p=heart(ang);
+ctx.fillStyle="#ff69b4";
+ctx.fillText("I love you",
+canvas.width/2+p.x*scale,
+canvas.height/2-p.y*scale);
+}
+scale+=grow?0.1:-0.1;
+if(scale>22||scale<18)grow=!grow;
+t+=0.02;
+requestAnimationFrame(draw);
 }
 
-function startLove() {
-    document.querySelector("button").style.display = "none";
-
-    const iframe = document.querySelector("iframe");
-    iframe.src = "https://www.youtube.com/embed/NdYWuo9OFAw?autoplay=1";
-
-    document.getElementById("videoBox").style.display = "block";
-
-    draw();
+function startLove(){
+document.querySelector("button").style.display="none";
+document.querySelector("iframe").src=
+"https://www.youtube.com/embed/NdYWuo9OFAw?autoplay=1";
+document.getElementById("video").style.display="block";
+draw();
 }
 </script>
 
