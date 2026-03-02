@@ -2,31 +2,83 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Coração 💗</title>
+<title>💍 Pedido Especial</title>
 
 <style>
 body{
 margin:0;
 background:black;
 overflow:hidden;
-font-family:monospace;
+font-family:Arial, sans-serif;
+color:white;
+text-align:center;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+flex-direction:column;
 }
+
+button{
+padding:12px 25px;
+margin:10px;
+font-size:18px;
+border:none;
+border-radius:20px;
+cursor:pointer;
+background:pink;
+}
+
 canvas{
-display:block;
+position:absolute;
+top:0;
+left:0;
+z-index:-1;
+}
+
+/* Figurinha animada */
+.sticker{
+width:150px;
+animation: balancar 2s infinite ease-in-out;
+}
+
+@keyframes balancar{
+0%{transform:rotate(-5deg);}
+50%{transform:rotate(5deg);}
+100%{transform:rotate(-5deg);}
+}
+
+.hidden{
+display:none;
 }
 </style>
 </head>
 <body>
 
+<button onclick="startLove()" id="startBtn">Clique 💗</button>
+
+<div id="pedido" class="hidden">
+<h1>💍 Lari, vai casar comigo?</h1>
+
+<img src="lari.png" class="sticker">
+
+<br>
+
+<button onclick="resposta()">YES 😌</button>
+<button onclick="resposta()">YES 😏</button>
+</div>
+
 <canvas id="c"></canvas>
 
-<audio id="music" autoplay loop>
+<audio id="music" loop>
 <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_115b9b0e6e.mp3?filename=romantic-piano-ambient-110997.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 let canvas=document.getElementById("c");
 let ctx=canvas.getContext("2d");
+let music=document.getElementById("music");
+
 canvas.width=window.innerWidth;
 canvas.height=window.innerHeight;
 
@@ -44,10 +96,10 @@ ctx.clearRect(0,0,canvas.width,canvas.height);
 ctx.fillStyle="#ff69b4";
 ctx.font="14px monospace";
 
-for(let i=0;i<200;i++){
+for(let i=0;i<150;i++){
 let ang=i*0.1+t;
 let p=heart(ang);
-ctx.fillText("I love you",
+ctx.fillText("Lari 💗",
 canvas.width/2+p.x*scale,
 canvas.height/2-p.y*scale);
 }
@@ -58,7 +110,17 @@ t+=0.02;
 requestAnimationFrame(draw);
 }
 
+function startLove(){
+document.getElementById("startBtn").style.display="none";
+document.getElementById("pedido").classList.remove("hidden");
+music.volume=0.4;
+music.play();
 draw();
+}
+
+function resposta(){
+alert("💍 Agora não tem volta 😏💗");
+}
 </script>
 
 </body>
