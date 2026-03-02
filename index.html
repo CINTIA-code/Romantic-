@@ -1,86 +1,105 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Iris 💗</title>
+<title>Coração com Iris 💗</title>
+
 <style>
-body{
-margin:0;
-background:black;
-overflow:hidden;
-font-family:monospace;
+body {
+    margin: 0;
+    background: black;
+    overflow: hidden;
+    font-family: monospace;
 }
-button{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-padding:15px 25px;
-background:pink;
-border:none;
-border-radius:20px;
+
+button {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    padding: 15px 30px;
+    background: pink;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
 }
-canvas{
-display:block;
-}
-.video{
-position:fixed;
-bottom:10px;
-right:10px;
-display:none;
+
+canvas { display:block; }
+
+/* Box pequeno do vídeo */
+.video-box {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 200px;
+    height: 113px;
+    display: none;
 }
 </style>
 </head>
 <body>
 
-<button onclick="startLove()">Clique 💗</button>
-<canvas id="c"></canvas>
+<button onclick="startMusic()">Clique 💗</button>
 
-<div class="video" id="video">
-<iframe width="200" height="120"
+<canvas id="heartCanvas"></canvas>
+
+<div class="video-box" id="vidBox">
+<iframe
+width="200"
+height="113"
+id="ytplayer"
 src=""
 frameborder="0"
-allow="autoplay"
-allowfullscreen></iframe>
+allow="autoplay; encrypted-media"
+allowfullscreen>
+</iframe>
 </div>
 
 <script>
-let canvas=document.getElementById("c");
-let ctx=canvas.getContext("2d");
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
+const canvas = document.getElementById("heartCanvas");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-let t=0,scale=18,grow=true;
+let t = 0;
+let scale = 18;
+let growing = true;
 
-function heart(a){
-return{
-x:16*Math.pow(Math.sin(a),3),
-y:13*Math.cos(a)-5*Math.cos(2*a)-2*Math.cos(3*a)-Math.cos(4*a)
-}
-}
-
-function draw(){
-ctx.clearRect(0,0,canvas.width,canvas.height);
-for(let i=0;i<200;i++){
-let ang=i*0.1+t;
-let p=heart(ang);
-ctx.fillStyle="#ff69b4";
-ctx.fillText("I love you",
-canvas.width/2+p.x*scale,
-canvas.height/2-p.y*scale);
-}
-scale+=grow?0.1:-0.1;
-if(scale>22||scale<18)grow=!grow;
-t+=0.02;
-requestAnimationFrame(draw);
+function heart(t) {
+    let x = 16 * Math.pow(Math.sin(t), 3);
+    let y = 13 * Math.cos(t)
+          - 5 * Math.cos(2 * t)
+          - 2 * Math.cos(3 * t)
+          - Math.cos(4 * t);
+    return { x, y };
 }
 
-function startLove(){
-document.querySelector("button").style.display="none";
-document.querySelector("iframe").src=
-"https://www.youtube.com/embed/NdYWuo9OFAw?autoplay=1";
-document.getElementById("video").style.display="block";
-draw();
+function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = "#ff69b4";
+    ctx.font = "14px monospace";
+    for (let i=0; i<200; i++){
+        let angle = i * 0.1 + t;
+        let p = heart(angle);
+        ctx.fillText("I love you",
+           canvas.width/2 + p.x * scale,
+           canvas.height/2 - p.y * scale);
+    }
+    if (growing) scale += 0.1;
+    else scale -= 0.1;
+    if (scale > 22 || scale < 18) growing = !growing;
+    t += 0.02;
+    requestAnimationFrame(draw);
+}
+
+function startMusic() {
+    document.querySelector("button").style.display = "none";
+    document.getElementById("ytplayer").src =
+      "https://www.youtube.com/embed/NdYWuo9OFAw?autoplay=1";
+    document.getElementById("vidBox").style.display = "block";
+    draw();
 }
 </script>
 
